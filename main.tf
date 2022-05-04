@@ -20,31 +20,32 @@ provider "proxmox" {
 }
 
 module "gitlab" {
-  source              = "./modules/vm"
+  source              = "./modules/lxc"
   ostemplate          = "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"
+  target_node         = "box"
   memory              = 4096
   diskSizeInGB        = 16
   password            = var.vm_password
   ssh_public_key_path = var.ssh_public_key_path
-  vms                 = ["gitlab"]
+  lxcs                = ["gitlab"]
 }
 
-module "vm_k8s_master" {
-  source              = "./modules/vm"
-  ostemplate          = "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"
-  memory              = 2048
-  diskSizeInGB        = 16
-  password            = var.vm_password
-  ssh_public_key_path = var.ssh_public_key_path
-  vms                 = ["master"]
+module "master" {
+  source       = "./modules/qemu"
+  target_node  = "box"
+  clone        = "ci-ubuntu-focal"
+  cores        = 2
+  memory       = 2048
+  diskSizeInGB = 32
+  qemus        = ["master"]
 }
 
-module "vm_k8s_node" {
-  source              = "./modules/vm"
-  ostemplate          = "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"
-  memory              = 4096
-  diskSizeInGB        = 32
-  password            = var.vm_password
-  ssh_public_key_path = var.ssh_public_key_path
-  vms                 = ["node-01", "node-02", "node-03"]
+module "node" {
+  source       = "./modules/qemu"
+  target_node  = "box"
+  clone        = "ci-ubuntu-focal"
+  cores        = 4
+  memory       = 4096
+  diskSizeInGB = 32
+  qemus        = ["node-01", "node-02", "node-03"]
 }

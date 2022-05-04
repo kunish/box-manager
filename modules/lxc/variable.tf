@@ -1,5 +1,9 @@
-variable "vms" {
+variable "lxcs" {
   type = list(string)
+}
+
+variable "target_node" {
+  type = string
 }
 
 variable "memory" {

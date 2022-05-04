@@ -17,9 +17,9 @@ data "terraform_remote_state" "router" {
   }
 }
 
-resource "proxmox_lxc" "vm" {
-  for_each     = toset(var.vms)
-  target_node  = "box"
+resource "proxmox_lxc" "lxc" {
+  for_each     = toset(var.lxcs)
+  target_node  = var.target_node
   hostname     = each.key
   ostemplate   = var.ostemplate
   password     = var.password
