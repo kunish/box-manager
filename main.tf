@@ -4,6 +4,13 @@ terraform {
       source = "telmate/proxmox"
     }
   }
+
+  backend "remote" {
+    organization = "kunish"
+    workspaces {
+      name = "box"
+    }
+  }
 }
 
 provider "proxmox" {
@@ -12,21 +19,29 @@ provider "proxmox" {
   pm_password = var.pm_password
 }
 
-resource "proxmox_lxc" "basic" {
-  target_node  = "box"
-  hostname     = "lxc-basic"
+module "gitlab" {
+  source       = "./modules/vm"
   ostemplate   = "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"
-  password     = "123456"
-  unprivileged = true
+  memory       = 4096
+  diskSizeInGB = 16
+  password     = var.vm_password
+  vms          = ["gitlab"]
+}
 
-  rootfs {
-    storage = "local-lvm"
-    size    = "16G"
-  }
+module "vm_k8s_master" {
+  source       = "./modules/vm"
+  ostemplate   = "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"
+  memory       = 2048
+  diskSizeInGB = 16
+  password     = var.vm_password
+  vms          = ["master"]
+}
 
-  network {
-    name   = "eth0"
-    bridge = "vmbr0"
-    ip     = "dhcp"
-  }
+module "vm_k8s_node" {
+  source       = "./modules/vm"
+  ostemplate   = "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"
+  memory       = 4096
+  diskSizeInGB = 32
+  password     = var.vm_password
+  vms          = ["node-01", "node-02", "node-03"]
 }
