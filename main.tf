@@ -20,28 +20,31 @@ provider "proxmox" {
 }
 
 module "gitlab" {
-  source       = "./modules/vm"
-  ostemplate   = "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"
-  memory       = 4096
-  diskSizeInGB = 16
-  password     = var.vm_password
-  vms          = ["gitlab"]
+  source              = "./modules/vm"
+  ostemplate          = "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"
+  memory              = 4096
+  diskSizeInGB        = 16
+  password            = var.vm_password
+  ssh_public_key_path = var.ssh_public_key_path
+  vms                 = ["gitlab"]
 }
 
 module "vm_k8s_master" {
-  source       = "./modules/vm"
-  ostemplate   = "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"
-  memory       = 2048
-  diskSizeInGB = 16
-  password     = var.vm_password
-  vms          = ["master"]
+  source              = "./modules/vm"
+  ostemplate          = "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"
+  memory              = 2048
+  diskSizeInGB        = 16
+  password            = var.vm_password
+  ssh_public_key_path = var.ssh_public_key_path
+  vms                 = ["master"]
 }
 
 module "vm_k8s_node" {
-  source       = "./modules/vm"
-  ostemplate   = "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"
-  memory       = 4096
-  diskSizeInGB = 32
-  password     = var.vm_password
-  vms          = ["node-01", "node-02", "node-03"]
+  source              = "./modules/vm"
+  ostemplate          = "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"
+  memory              = 4096
+  diskSizeInGB        = 32
+  password            = var.vm_password
+  ssh_public_key_path = var.ssh_public_key_path
+  vms                 = ["node-01", "node-02", "node-03"]
 }

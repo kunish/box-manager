@@ -17,3 +17,8 @@ variable "vm_password" {
   type      = string
   sensitive = true
 }
+
+variable "ssh_public_key_path" {
+  type      = string
+  sensitive = true
+}

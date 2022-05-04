@@ -40,4 +40,6 @@ resource "proxmox_lxc" "vm" {
     ip     = "dhcp"
     hwaddr = lower(data.terraform_remote_state.router.outputs.leases[each.key].macaddress)
   }
+
+  ssh_public_keys = file(var.ssh_public_key_path)
 }
