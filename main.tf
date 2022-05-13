@@ -30,6 +30,16 @@ module "gitlab" {
   lxcs                = ["gitlab"]
 }
 
+module "runner" {
+  source       = "./modules/qemu"
+  target_node  = "box"
+  clone        = "ci-ubuntu-focal"
+  cores        = 2
+  memory       = 2048
+  diskSizeInGB = 64
+  qemus        = ["runner"]
+}
+
 module "master" {
   source       = "./modules/qemu"
   target_node  = "box"
