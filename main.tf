@@ -40,6 +40,16 @@ module "runner" {
   qemus        = ["runner"]
 }
 
+module "minio" {
+  source       = "./modules/qemu"
+  target_node  = "box"
+  clone        = "ci-ubuntu-focal"
+  cores        = 2
+  memory       = 2048
+  diskSizeInGB = 128
+  qemus        = ["minio"]
+}
+
 module "master" {
   source       = "./modules/qemu"
   target_node  = "box"
