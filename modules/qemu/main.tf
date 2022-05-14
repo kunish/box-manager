@@ -38,5 +38,7 @@ resource "proxmox_vm_qemu" "qemu" {
     macaddr = lower(data.terraform_remote_state.router.outputs.leases[each.key].macaddress)
   }
 
-  ipconfig0 = "ip=dhcp,ip6=dhcp"
+  lifecycle {
+    ignore_changes = [ipconfig0, sshkeys, ciuser]
+  }
 }
