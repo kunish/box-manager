@@ -37,4 +37,6 @@ resource "proxmox_vm_qemu" "qemu" {
     bridge  = "vmbr0"
     macaddr = lower(data.terraform_remote_state.router.outputs.leases[each.key].macaddress)
   }
+
+  ipconfig0 = "ip=dhcp,ip6=dhcp"
 }
