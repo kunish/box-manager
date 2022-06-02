@@ -23,8 +23,8 @@ module "gitlab" {
   source              = "./modules/lxc"
   ostemplate          = "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"
   target_node         = "box"
-  memory              = 4096
-  diskSizeInGB        = 16
+  memory              = 8192
+  diskSizeInGB        = 64
   password            = var.vm_password
   ssh_public_key_path = var.ssh_public_key_path
   lxcs                = ["gitlab"]
